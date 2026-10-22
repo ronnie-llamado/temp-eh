@@ -5,6 +5,5 @@ project(temp-eh)
 
 target_sources(app PRIVATE
 	src/main.cpp
-	src/led.cpp
-	src/temperature.cpp
+	src/zephyr_i2c.cpp
 )
