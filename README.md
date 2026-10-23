@@ -1,7 +1,7 @@
 
 # temp-eh
 
-Transmit ambient temperature data wirelessly to your device with the temp-eh external wireless temperature sensor.
+ANT+ Temperature Sensor
 
 ##  build
 
