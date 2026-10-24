@@ -1,7 +1,12 @@
-#include <iostream>
+#include <zephyr/kernel.h>
+
+static uint32_t count = 0;
 
 int main(void)
 {
-	std::cout << "Hello, world! " << CONFIG_BOARD << std::endl;
-	return 0;
+	while(1)
+	{
+		printk("Alive (%d)!\r\n", count++);
+		k_sleep(K_SECONDS(1));
+	}
 }
