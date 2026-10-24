@@ -1,0 +1,15 @@
+manifest:
+  version: "0.13"
+
+  remotes:
+    - name: ant-nrfconnect
+      url-base: https://github.com/ant-nrfconnect
+
+  projects:
+    - name: sdk-ant
+      remote: ant-nrfconnect
+      revision: main
+      import: true
+
+  self:
+    path: temp-eh
