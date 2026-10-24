@@ -4,3 +4,4 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(temp-eh)
 
 target_sources(app PRIVATE src/main.cpp)
+target_sources(app PRIVATE src/led.cpp)
