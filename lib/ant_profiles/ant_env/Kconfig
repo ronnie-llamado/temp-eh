@@ -1,0 +1,10 @@
+menuconfig ANT_ENV
+	bool "ANT+ ENV profile"
+	help
+		Support for ANT+ ENV constants and pages
+
+if ANT_ENV
+
+rsource "pages/Kconfig"
+
+endif # ANT_ENV
