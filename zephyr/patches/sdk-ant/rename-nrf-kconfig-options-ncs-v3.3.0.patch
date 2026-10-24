@@ -1,0 +1,87 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 04bc8bf..7ca2892 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -43,4 +43,4 @@ if(CONFIG_CLOCK_CONTROL_NRF_ACCURACY GREATER 50)
+   ANT requires a low frequency clock source with a maximum tolerance of +/- 50 ppm.
+   Please see Kconfig values CONFIG_CLOCK_CONTROL_NRF_K32SRC and CONFIG_CLOCK_CONTROL_NRF_ACCURACY.
+   ")
+-endif()
+\ No newline at end of file
++endif()
+diff --git a/Kconfig b/Kconfig
+index aed5dbb..1402738 100644
+--- a/Kconfig
++++ b/Kconfig
+@@ -32,11 +32,11 @@ config ANT_LIBRARY_CORE
+ 
+ config ANT_LIB_DIR
+ 	string
+-	default "nrf52" if SOC_SERIES_NRF52X
++	default "nrf52" if SOC_SERIES_NRF52
+ 	default "nrf53" if SOC_NRF5340_CPUNET
+ 	default "nrf54h" if SOC_NRF54H20_CPURAD
+-	default "nrf54l_ns" if SOC_SERIES_NRF54LX && TRUSTED_EXECUTION_NONSECURE  # 'ns' target unsupported
+-	default "nrf54l" if SOC_SERIES_NRF54LX && !TRUSTED_EXECUTION_NONSECURE
++	default "nrf54l_ns" if SOC_SERIES_NRF54L && TRUSTED_EXECUTION_NONSECURE  # 'ns' target unsupported
++	default "nrf54l" if SOC_SERIES_NRF54L && !TRUSTED_EXECUTION_NONSECURE
+   help
+     Helper option to calculate the library path.
+ 
+@@ -50,4 +50,4 @@ rsource "np/Kconfig"
+ 
+ endif # ANT
+ 
+-endmenu
+\ No newline at end of file
++endmenu
+diff --git a/init/Kconfig b/init/Kconfig
+index 8147a67..95c5c25 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -41,15 +41,15 @@ choice ANT_SWI
+ 
+ config ANT_SWI1
+ 	bool "SWI1"
+-	depends on HAS_HW_NRF_SWI1 || SOC_SERIES_NRF54LX
++	depends on HAS_HW_NRF_SWI1 || SOC_SERIES_NRF54L
+ 
+ config ANT_SWI2
+ 	bool "SWI2"
+-	depends on HAS_HW_NRF_SWI2 || SOC_SERIES_NRF54LX
++	depends on HAS_HW_NRF_SWI2 || SOC_SERIES_NRF54L
+ 
+ config ANT_SWI3
+ 	bool "SWI3"
+-	depends on HAS_HW_NRF_SWI3 || SOC_SERIES_NRF54LX
++	depends on HAS_HW_NRF_SWI3 || SOC_SERIES_NRF54L
+ 
+ endchoice
+ 
+diff --git a/init/ant_init.c b/init/ant_init.c
+index f0b2642..53099fe 100644
+--- a/init/ant_init.c
++++ b/init/ant_init.c
+@@ -27,19 +27,19 @@ static K_THREAD_STACK_DEFINE(ant_work_stack, CONFIG_ANT_WORK_STACK_SIZE);
+ LOG_MODULE_REGISTER(ant_init, CONFIG_ANT_LOG_LEVEL);
+ 
+ #if defined(CONFIG_ANT_SWI1)
+-#if defined (CONFIG_SOC_SERIES_NRF54LX)
++#if defined (CONFIG_SOC_SERIES_NRF54L)
+ #define ANT_SWI_IRQN SWI01_IRQn
+ #else
+ #define ANT_SWI_IRQN SWI1_IRQn
+ #endif
+ #elif defined(CONFIG_ANT_SWI2)
+-#if defined (CONFIG_SOC_SERIES_NRF54LX)
++#if defined (CONFIG_SOC_SERIES_NRF54L)
+ #define ANT_SWI_IRQN SWI02_IRQn
+ #else
+ #define ANT_SWI_IRQN SWI2_IRQn
+ #endif
+ #elif defined(CONFIG_ANT_SWI3)
+-#if defined (CONFIG_SOC_SERIES_NRF54LX)
++#if defined (CONFIG_SOC_SERIES_NRF54L)
+ #define ANT_SWI_IRQN SWI03_IRQn
+ #else
+ #define ANT_SWI_IRQN SWI3_IRQn

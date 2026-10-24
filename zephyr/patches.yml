@@ -1,0 +1,13 @@
+patches:
+  - path: sdk-ant/rename-nrf-kconfig-options-ncs-v3.3.0.patch
+    sha256sum: 3919f200acdfb91352f9162b623fe275bd31ce8f0548ccda950f25c80ba2c537
+    module: sdk-ant
+    author: Ronnie Llamado
+    email: llamado.ronnie@gmail.com
+    date: 2026-10-24
+    upstreamable: false
+    merge-status: false
+    apply-command: git apply
+    comments: |
+      Renames SOC_SERIES_NRF54LX to SOC_SERIES_NRF54L so ANT builds on
+      nRF54L with  NCS v3.3.0+ (Zephyr v4.4+). Remove once fixed upstream.
