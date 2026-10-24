@@ -6,4 +6,5 @@ project(temp-eh)
 target_sources(app PRIVATE
 	src/main.cpp
 	src/zephyr_i2c.cpp
+	src/bme680_cal.cpp
 )

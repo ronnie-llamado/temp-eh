@@ -30,11 +30,15 @@ int main(void) {
     return 1;
   }
 
-  bme680.readTempCal();
+  // Initialize BME680
+  bme680.readTempCal1();
+  bme680.readTempCal2();
+  bme680.readTempCal3();
+  bme680.configureTempOsr(OsrsTemp::X16);
 
   while (1) {
     // Read temperature
-    bme680.readTemp(&temp);
+    bme680.readTempInt(&temp);
     printk("%d.%02d\r\n", temp / 100, abs(temp % 100));
 
     // Toggle LED
@@ -42,6 +46,9 @@ int main(void) {
     if (ret < 0) {
       return 1;
     }
+
+    // Trigger next measurement
+    bme680.triggerMeasurement();
 
     k_sleep(K_MSEC(500));
   }
