@@ -66,49 +66,29 @@ int Bme680<Bus>::configureTempOsr(OsrsTemp::Type osr) {
 
 template <typename Bus>
 int Bme680<Bus>::readTempCal1(void) {
-  uint8_t regId = T1_LSB;
-  uint8_t data[2];
-
-  bus_.writeRead(addr_, &regId, 1, &data[0], 2);
-  temp_cal_.T1 = (data[1] << 8) + data[0];
-
-  return 0;
+  return bus_.readRegister16(addr_, T1_LSB, &temp_cal_.T1);
 }
 
 template <typename Bus>
 int Bme680<Bus>::readTempCal2(void) {
-  uint8_t regId = T2_LSB;
-  uint8_t data[2];
-
-  bus_.writeRead(addr_, &regId, 1, &data[0], 2);
-  temp_cal_.T2 = (data[1] << 8) + data[0];
-
-  return 0;
+  return bus_.readRegister16(addr_, T2_LSB, &temp_cal_.T2);
 }
 
 template <typename Bus>
 int Bme680<Bus>::readTempCal3(void) {
-  uint8_t regId = T3;
-  uint8_t data;
-
-  bus_.writeRead(addr_, &regId, 1, &data, 1);
-  temp_cal_.T3 = data;
-
-  return 0;
+  return bus_.readRegister8(addr_, T3, &temp_cal_.T3);
 }
 
 template <typename Bus>
 int Bme680<Bus>::readChipId(uint8_t* chipId) {
-  const uint8_t regId = CHIP_ID;
-  return bus_.writeRead(addr_, &regId, 1, chipId, 1);
+  return bus_.readRegister8(addr_, CHIP_ID, chipId);
 }
 
 template <typename Bus>
 int Bme680<Bus>::readRawTemp(uint32_t* rawTemp) {
   uint8_t raw[3];
-  const uint8_t regId = TEMP_MSB;
 
-  bus_.writeRead(addr_, &regId, 1, &raw[0], 3);
+  bus_.readRegister(addr_, TEMP_MSB, &raw[0], 3);
   *rawTemp = (raw[0] << 12) + (raw[1] << 4) + (raw[2] >> 4);
 
   return 0;
@@ -126,7 +106,6 @@ int Bme680<Bus>::readTempInt(int16_t* temp) {
 
 template <typename Bus>
 int Bme680<Bus>::triggerMeasurement(void) {
-  const uint8_t enableData[2] = {CTRL_MEAS,
-                                 (uint8_t)(osrs_temp_ | Mode::FORCED)};
-  return bus_.write(addr_, &enableData[0], 2);
+  uint8_t data = (uint8_t)(osrs_temp_ | Mode::FORCED);
+  return bus_.writeRegister8(addr_, CTRL_MEAS, data);
 }
