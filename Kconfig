@@ -1,0 +1,8 @@
+
+if ANT
+
+rsource "lib/Kconfig"
+
+endif # ANT
+
+source "Kconfig.zephyr"
